@@ -1,10 +1,12 @@
 window.addEventListener('scroll', onScroll)
-
-
 onScroll()
 function onScroll(){
     showNavOnScroll()
     showBackToTopButton()
+    activateMenuAtCurrentSection(home)
+    activateMenuAtCurrentSection(services)
+    activateMenuAtCurrentSection(about)
+    activateMenuAtCurrentSection(contact)
 }
 
 function showNavOnScroll(){
@@ -40,6 +42,31 @@ function closeMenu(){
 
     if(menu_xl.classList.contains("menu-expanded")){
         menu_xl.classList.remove("menu-expanded")
+    }
+}
+
+function activateMenuAtCurrentSection(section){
+    const targetLine = scrollY + (innerHeight / 2)
+
+    const sectionTop = section.offsetTop
+    const sectionHeight = section.offsetHeight
+
+    const sectionEndAt = sectionTop + sectionHeight
+
+    const sectionTopReachOrPassedTargetLine =  targetLine >= sectionTop
+    const sectionEndOrPassedTargetLine =  sectionEndAt <= targetLine  
+
+    const sectionBoundaries = sectionTopReachOrPassedTargetLine && !sectionEndOrPassedTargetLine
+
+    const currentSection = section.getAttribute('id')
+
+
+    const menuElement = document.querySelector(`.menu a[href*=${currentSection}]`)
+
+    menuElement.classList.remove('active')
+
+    if(sectionBoundaries){
+        menuElement.classList.add('active')
     }
 }
 
